@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-# Opcional: login usando variáveis de ambiente
+# Carrega usuário e senha do Instagram das variáveis de ambiente
 INSTAGRAM_USER = os.getenv('INSTAGRAM_USER')
 INSTAGRAM_PASS = os.getenv('INSTAGRAM_PASS')
 
@@ -18,7 +18,7 @@ def get_followers():
     try:
         L = instaloader.Instaloader()
 
-        # Se você configurou login via env
+        # Login opcional se variáveis existirem
         if INSTAGRAM_USER and INSTAGRAM_PASS:
             L.login(INSTAGRAM_USER, INSTAGRAM_PASS)
 
@@ -33,4 +33,5 @@ def get_followers():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    port = int(os.getenv('PORT', 5001))  # Default 5001
+    app.run(host='0.0.0.0', port=port)
